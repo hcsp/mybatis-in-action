@@ -1,0 +1,3 @@
+src/main/java/com/github/hcsp/mybatis/
+src/resources/
+pom.xml
