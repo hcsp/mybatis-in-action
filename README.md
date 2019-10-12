@@ -69,7 +69,7 @@
 -----
 注意！我们只允许你修改以下文件，对其他文件的修改会被拒绝：
 - [src/main/java/com/github/hcsp/mybatis/](https://github.com/hcsp/mybatis-in-action/blob/master/src/main/java/com/github/hcsp/mybatis/)
-- [src/resources/](https://github.com/hcsp/mybatis-in-action/blob/master/src/resources/)
+- [src/main/resources/](https://github.com/hcsp/mybatis-in-action/blob/master/src/main/resources/)
 - [pom.xml](https://github.com/hcsp/mybatis-in-action/blob/master/pom.xml)
 -----
 
