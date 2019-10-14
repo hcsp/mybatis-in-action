@@ -1,7 +1,7 @@
 # MyBatis实战
 
-我在[`UserDao`类](https://github.com/hcsp/mybatis-in-action/blob/master/src/main/java/com/github/hcsp/sql/Sql.java)
-和[`OrderDao`类](https://github.com/hcsp/mybatis-in-action/blob/master/src/main/java/com/github/hcsp/sql/Sql.java)里给你准备了很多和SELECT相关的题目，请完成之。
+我在[`UserDao`类](https://github.com/hcsp/mybatis-in-action/blob/master/src/main/java/com/github/hcsp/mybatis/UserDao.java)
+和[`OrderDao`类](https://github.com/hcsp/mybatis-in-action/blob/master/src/main/java/com/github/hcsp/mybatis/OrderDao.java)里给你准备了很多和SELECT相关的题目，请完成之。
 
 要完成这个挑战，你需要：
 
@@ -9,7 +9,7 @@
 - 自己从零开始配置MyBatis。这会让你熟悉JDBC、ORM以及MyBatis的各种概念。
 - 完成各种复杂的SQL查询方法。我们鼓励你尝试不同的XML或者注解方式。
 
-注意，数据库的连接URL是`jdbc:h2:file:<你的项目文件夹地址>/target/test`，例如`jdbc:h2:file:D:/problems/practise-select-sql/target/test`
+注意，数据库的连接URL是`jdbc:h2:file:<你的项目文件夹地址>/target/test`，例如`jdbc:h2:file:D:/problems/mybatis-in-action/target/test`
 
 用户名是`root`，密码是`Jxi1Oxc92qSj`。
 
