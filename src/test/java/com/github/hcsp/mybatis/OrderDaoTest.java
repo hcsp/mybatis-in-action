@@ -24,6 +24,7 @@ public class OrderDaoTest {
     @Test
     public void testGetOrder() {
         final List<Order> orders = orderDao.getInnerJoinOrders();
+        System.out.println(orders);
         Assertions.assertEquals(
                 Arrays.asList(50, 10, 20, 80, 2000, 20),
                 orders.stream()
