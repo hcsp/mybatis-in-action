@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MyMapper">
+    <select id="getUserByPage" parameterType="map" resultType="com.github.hcsp.mybatis.entity.User">
+        select id, name, tel, address
+        from USER
+        <where>
+            <if test="username != null">
+                NAME = #{username}
+            </if>
+        </where>
+        limit #{offset},#{limit}
+    </select>
+
+    <select id="getCountUser" parameterType="string" resultType="java.lang.Integer">
+        select count(*) from USER
+        <where>
+            <if test="string != null">
+                NAME = #{username}
+            </if>
+        </where>
+    </select>
+
+    <insert id="batchInsert" parameterType="map">
+        insert into USER ("NAME", "TEL", "ADDRESS") values
+        <foreach item="user" collection="users" separator=",">
+            (#{user.name},#{user.tel},#{user.address})
+        </foreach>
+    </insert>
+
+    <update id="updateUser">
+        update USER
+        <set>
+            <if test="name != null">name=#{name},</if>
+            <if test="tel != null">tel=#{tel},</if>
+            <if test="address != null">address=#{address},</if>
+            updated_at=now()
+        </set>
+    </update>
+
+    <delete id="deleteUserById">
+        DELETE FROM USER where ID=#{id}
+    </delete>
+
+    <select id="selectUserById" resultType="com.github.hcsp.mybatis.entity.User">
+        select id, NAME, TEL, ADDRESS
+        from USER
+        where ID = #{id}
+    </select>
+
+    <select id="getInnerJoinOrders" resultMap="OrderMap">
+        select "ORDER".id as order_id,
+               "USER".NAME as user_name,
+               "GOODS".NAME as goods_name,
+               "ORDER".GOODS_PRICE as goods_price,
+               "ORDER".GOODS_PRICE * "ORDER".GOODS_NUM as total_price
+        from "ORDER"
+                 inner join "USER" on "USER".ID="ORDER".USER_ID
+                 inner join "GOODS" on "GOODS".ID="ORDER".GOODS_ID
+    </select>
+    
+    <resultMap id="OrderMap" type="com.github.hcsp.mybatis.entity.Order">
+        <result property="id" column="order_id"/>
+        <result property="totalPrice" column="total_price"/>
+        <association property="user" javaType="com.github.hcsp.mybatis.entity.User">
+            <result property="name" column="user_name" />
+        </association>
+        <association property="goods" javaType="com.github.hcsp.mybatis.entity.Goods">
+            <result property="name" column="goods_name" />
+            <result property="price" column="goods_price" />
+        </association>
+    </resultMap>
+</mapper>
