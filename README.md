@@ -9,8 +9,6 @@
 - 自己从零开始配置MyBatis。这会让你熟悉JDBC、ORM以及MyBatis的各种概念。
 - 完成各种复杂的SQL查询方法。我们鼓励你尝试不同的XML或者注解方式。
 
-注意，数据库的连接URL是`jdbc:h2:file:<你的项目文件夹地址>/target/test`，例如`jdbc:h2:file:D:/problems/mybatis-in-action/target/test`
-
 用户名是`root`，密码是`Jxi1Oxc92qSj`。
 
 数据库中的初始数据如下所示：
