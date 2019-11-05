@@ -17,4 +17,8 @@
         </dataSource>
       </environment>
     </environments>
+    <mappers>
+        <mapper resource="orderMapper.xml" />
+        <mapper resource="userMapper.xml" />
+    </mappers>
 </configuration>

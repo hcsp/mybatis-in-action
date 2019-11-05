@@ -2,7 +2,12 @@ package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.entity.Pagination;
 import com.github.hcsp.mybatis.entity.User;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 /** 与用户有关的增删改查操作 */
@@ -13,6 +18,8 @@ public class UserDao {
         this.sqlSessionFactory = sqlSessionFactory;
     }
 
+    static final String CLASS_PATH = UserDao.class.getPackage().getName() + ".UserDao";
+
     /**
      * 根据传入的参数查找用户名为username的用户，返回分页后的结果。
      *
@@ -22,7 +29,16 @@ public class UserDao {
      * @return 查找结果，若username为null，则返回所有用户的列表
      */
     public Pagination<User> getUserByPage(String username, int pageSize, int pageNum) {
-        return null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", username);
+        map.put("pageSize", pageSize);
+        map.put("pageNum", pageNum);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()){
+            int  totalCount = sqlSession.selectOne(CLASS_PATH + ".getTotalPage", map);
+            List<User> users = sqlSession.selectList(CLASS_PATH + ".getUserByPage", map);
+            int totalPage = totalCount < pageSize ? 1 : (int) Math.ceil(totalCount / pageSize);
+            return new Pagination<User>(users, pageSize, pageNum, totalPage);
+        }
     }
 
     /**
@@ -30,21 +46,35 @@ public class UserDao {
      *
      * @param users 待插入的用户列表
      */
-    public void batchInsertUsers(List<User> users) {}
+    public void batchInsertUsers(List<User> users) {
+        // 插入数据时， 记得设置autoCommit, 否则不生效
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)){
+            sqlSession.insert(CLASS_PATH + ".batchInsertUsers", users);
+        }
+    }
 
     /**
      * 根据用户的ID更新一个用户的数据，更新传入的user中所有不为null的字段。
      *
      * @param user 要修改的用户信息，其id必须不为null
      */
-    public void updateUser(User user) {}
+    public void updateUser(User user) {
+        // 插入数据时， 记得设置autoCommit, 否则不生效
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)){
+            sqlSession.insert(CLASS_PATH + ".updateUser", user);
+        }
+    }
 
     /**
      * 删除一个用户。
      *
      * @param id 待删除的用户ID
      */
-    public void deleteUserById(Integer id) {}
+    public void deleteUserById(Integer id) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)){
+            sqlSession.delete(CLASS_PATH + ".deleteUserById", id);
+        }
+    }
 
     /**
      * 根据ID获取一个用户，如果该用户不存在，返回null
@@ -53,6 +83,8 @@ public class UserDao {
      * @return 对应的用户
      */
     public User selectUserById(Integer id) {
-        return null;
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)){
+            return sqlSession.selectOne(CLASS_PATH + ".selectUserById", id);
+        }
     }
 }

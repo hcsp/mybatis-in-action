@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.hcsp.mybatis.OrderDao">
+    <resultMap id="finalOrder" type="com.github.hcsp.mybatis.entity.Order">
+        <result property="id" column="id" />
+        <result property="totalPrice" column="total_price" />
+        <association property="user" javaType="com.github.hcsp.mybatis.entity.User">
+            <result property="id" column="user_id" />
+            <result property="name" column="user_name" />
+            <result property="tel" column="tel" />
+            <result property="address" column="address" />
+        </association>
+        <association property="goods" javaType="com.github.hcsp.mybatis.entity.Goods">
+            <result property="id" column="goods_id" />
+            <result property="name" column="goods_name" />
+            <result property="price" column="goods_price" />
+        </association>
+    </resultMap>
+    <select id="getInnerJoinOrders" resultMap="finalOrder">
+        select
+        o.ID as id,
+        u.ID as user_id,
+        u.NAME as user_name,
+        u.TEL as tel,
+        u.ADDRESS as address,
+        g.ID as goods_id,
+        g.NAME as goods_name,
+        g.PRICE as goods_price,
+        (o.GOODS_NUM * o.GOODS_PRICE) as total_price
+        from "ORDER" o
+        inner join GOODS g on o.GOODS_ID = g.ID
+        inner join USER u on o.USER_ID = u.ID
+  </select>
+</mapper>
