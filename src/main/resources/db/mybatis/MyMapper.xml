@@ -16,15 +16,15 @@
         select count(*)
         from user
         <if test="username != null">
-            whrer name = #{username}
+            where name = #{username}
         </if>
     </select>
 
-    <insert id="batchInsertUsers" parameterType="map">
+    <insert id="batchInsertUsers" parameterType="list">
         insert into user (name,tel,address)
         values
-        <foreach item="user" collection="users" separator=",">
-            (#{item.name},#{item.tel},#{item.address})
+        <foreach item="user" collection="list" separator=",">
+            (#{user.name},#{user.tel},#{user.address})
         </foreach>
     </insert>
 

@@ -10,7 +10,9 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-/** 与用户有关的增删改查操作 */
+/**
+ * 与用户有关的增删改查操作
+ */
 public class UserDao {
     private final SqlSessionFactory sqlSessionFactory;
 
@@ -23,7 +25,7 @@ public class UserDao {
      *
      * @param username 传入的用户名
      * @param pageSize 分页搜索，每页显示的条数
-     * @param pageNum 分页的页码，从1开始
+     * @param pageNum  分页的页码，从1开始
      * @return 查找结果，若username为null，则返回所有用户的列表
      */
     public Pagination<User> getUserByPage(String username, int pageSize, int pageNum) {
@@ -32,7 +34,7 @@ public class UserDao {
             map.put("username", username);
             map.put("offset", (pageNum - 1) * pageSize);
             map.put("limit", pageSize);
-            List<User> users = session.selectList("myMapper.getUserByPage");
+            List<User> users = session.selectList("myMapper.getUserByPage", map);
 
             int count = session.selectOne("myMapper.countUser", username);
             int totalPage = (count % pageSize == 0) ? count / pageSize : count / pageSize + 1;
@@ -47,10 +49,8 @@ public class UserDao {
      * @param users 待插入的用户列表
      */
     public void batchInsertUsers(List<User> users) {
-        try(SqlSession session = sqlSessionFactory.openSession(true)){
-            Map<String , Object> param = new HashMap<>();
-            param.put("users",users);
-            session.insert("myMapper.batchInsertUsers");
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
+            session.insert("myMapper.batchInsertUsers", users);
         }
     }
 
@@ -60,7 +60,7 @@ public class UserDao {
      * @param user 要修改的用户信息，其id必须不为null
      */
     public void updateUser(User user) {
-        try(SqlSession session = sqlSessionFactory.openSession(true)){
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
             session.update("myMapper.updateUser", user);
         }
     }
@@ -71,7 +71,7 @@ public class UserDao {
      * @param id 待删除的用户ID
      */
     public void deleteUserById(Integer id) {
-        try (SqlSession session = sqlSessionFactory.openSession(true)){
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
             session.delete("myMapper.deleteUserById", id);
         }
     }
@@ -83,7 +83,7 @@ public class UserDao {
      * @return 对应的用户
      */
     public User selectUserById(Integer id) {
-        try (SqlSession session = sqlSessionFactory.openSession()){
+        try (SqlSession session = sqlSessionFactory.openSession()) {
             return session.selectOne("myMapper.selectUserById", id);
         }
     }
