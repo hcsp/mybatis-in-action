@@ -3,30 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
     <settings>
         <setting name="logImpl" value="LOG4J"/>
     </settings>
-
-    <typeAliases>
-        <typeAlias type="com.github.hcsp.mybatis.entity.User" alias="User"/>
-        <typeAlias type="com.github.hcsp.mybatis.entity.Order" alias="Order"/>
-        <typeAlias type="com.github.hcsp.mybatis.entity.Goods" alias="Goods"/>
-    </typeAliases>
-
     <environments default="development">
-        <environment id="development">
-            <transactionManager type="JDBC"/>
-            <dataSource type="POOLED">
-                <property name="driver" value="org.h2.Driver"/>
-                <property name="url" value="jdbc:h2:file:./target/test"/>
-                <property name="username" value="root"/>
-                <property name="password" value="Jxi1Oxc92qSj"/>
-            </dataSource>
-        </environment>
+      <environment id="development">
+        <transactionManager type="JDBC"/>
+        <dataSource type="POOLED">
+            <property name="driver" value="org.h2.Driver"/>
+            <property name="url" value="jdbc:h2:file:./target/test"/>
+            <property name="username" value="root"/>
+            <property name="password" value="Jxi1Oxc92qSj"/>
+        </dataSource>
+      </environment>
     </environments>
-    <mappers>
-        <mapper resource="db/mybatis/MyMapper.xml"/>
-    </mappers>
-
 </configuration>
