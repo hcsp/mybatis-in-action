@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="MyMapper">
-    <select id="getUserByPage" parameterMap="map" resultType="User">
+    <select id="getUserByPage" parameterMap="map" resultType="com.github.hcsp.mybatis.entity.User">
         select id,name,tel,address
         from user
         <if test="username != null">
@@ -40,18 +41,19 @@
          where id=#{id}
      </delete>
     <select id="selectUserById" parameterType="Integer" resultType="User">
-         select id,name,tel,address from user
+         select id,name,tel,address
+         from user
          where id=#{id}
      </select>
     <select id="getInnerJoinOrders" resultMap="Order">
-         select o.ID as order_id, u.ID as user_id,
-                 u.NAME as user_name, g.NAME as goods_name,
-                 g.price as goods_price, o.GOODS_NUM as goods_num,
-                 (o.goods_price * o.GOODS_NUM) as total_price
-         from "ORDER" o
-             inner join GOODS g on o.GOODS_ID = g.ID
-             inner join USER u on o.USER_ID = u.ID
-         where g.NAME is not null and u.NAME is not null
+         select "ORDER".id as order_id,
+                "USER".NAME as user_name,
+                "GOODS".NAME as goods_name,
+                "ORDER".GOODS_PRICE as goods_price,
+                "ORDER".GOODS_PRICE * "ORDER".GOODS_NUM as total_price
+         from "ORDER"
+                  inner join "USER" on "USER".ID="ORDER".USER_ID
+                  inner join "GOODS" on "GOODS".ID="ORDER".GOODS_ID
      </select>
 
     <resultMap id="Order" type="com.github.hcsp.mybatis.entity.Order">
