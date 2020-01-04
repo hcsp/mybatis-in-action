@@ -2,11 +2,9 @@ package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.entity.Pagination;
 import com.github.hcsp.mybatis.entity.User;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
