@@ -48,7 +48,7 @@ public class UserDao {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
             Map<String, Object> param = new HashMap<>();
             param.put("users", users);
-            session.insert("MaMapper.batchInsertUsers", param);
+            session.insert("MyMapper.batchInsertUsers", param);
         }
     }
 

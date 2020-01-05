@@ -12,6 +12,7 @@
         </if>
         limit #{offset},#{limit}
     </select>
+
     <select id="countUser" parameterType="string" resultType="int">
         select count(*)
         from user
@@ -21,12 +22,13 @@
     </select>
 
     <insert id="batchInsertUsers" parameterType="map">
-        insert into user(name,tel,address)
+        insert into user (name,tel,address)
         values
         <foreach item="user" collection="users" separator=",">
-            (#{user.name},#{user.tel}.#{user.address})
+            (#{user.name}, #{user.tel}, #{user.address})
         </foreach>
     </insert>
+
     <update id="updateUser" parameterType="User">
         update user
         <set>
@@ -36,15 +38,18 @@
         </set>
         where id=#{id}
     </update>
+
     <delete id="deleteUserById" parameterType="Integer">
          delete from user
          where id=#{id}
      </delete>
+
     <select id="selectUserById" parameterType="Integer" resultType="User">
          select id,name,tel,address
          from user
          where id=#{id}
      </select>
+
     <select id="getInnerJoinOrders" resultMap="Order">
          select "ORDER".id as order_id,
                 "USER".NAME as user_name,
