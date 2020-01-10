@@ -6,9 +6,6 @@
     <settings>
         <setting name="logImpl" value="LOG4J"/>
     </settings>
-    <typeAliases>
-        <package name="com.github.hcsp.mybatis.entity"/>
-    </typeAliases>
     <environments default="development">
       <environment id="development">
         <transactionManager type="JDBC"/>
@@ -20,10 +17,4 @@
         </dataSource>
       </environment>
     </environments>
-
-    <mappers>
-        <mapper resource="db/mybatis/mapperXml/UserMapper.xml"/>
-        <mapper resource="db/mybatis/mapperXml/OrderMapper.xml"/>
-    </mappers>
-
 </configuration>
