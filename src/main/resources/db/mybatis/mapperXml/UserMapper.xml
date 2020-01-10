@@ -1,0 +1,41 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.hcsp.mybatis.mapper.UserMapper">
+
+    <select id="getUserByPage" resultType="user" parameterType="map">
+        SELECT ID,NAME,TEL,ADDRESS FROM USER
+        <where>
+            <if test="username!= null">
+                NAME = #{username}
+            </if>
+        </where>
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+    <select id="countUserByName" resultType="int" parameterType="string">
+        SELECT COUNT(*) FROM USER
+        <where>
+            <if test="username!= null">
+                NAME = #{username}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateUserInfoById" parameterType="user">
+        UPDATE USER
+        <set>
+            <if test="name != null">
+                NAME = #{name}
+            </if>
+            <if test="tel != null">
+                TEL = #{tel}
+            </if>
+            <if test="address != null">
+                ADDRESS = #{address}
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+</mapper>
