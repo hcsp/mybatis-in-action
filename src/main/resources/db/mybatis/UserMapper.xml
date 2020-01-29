@@ -72,5 +72,4 @@
             <result property="price" column="goods_price"/>
         </association>
     </resultMap>
-
 </mapper>
