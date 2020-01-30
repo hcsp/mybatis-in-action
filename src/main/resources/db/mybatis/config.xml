@@ -4,8 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true" />
         <setting name="logImpl" value="LOG4J"/>
     </settings>
+    <typeAliases>
+        <typeAlias type="com.github.hcsp.mybatis.entity.User" alias="user"/>
+        <typeAlias type="com.github.hcsp.mybatis.entity.Order" alias="order"/>
+        <typeAlias type="com.github.hcsp.mybatis.entity.Goods" alias="goods"/>
+        <typeAlias type="com.github.hcsp.mybatis.entity.Pagination" alias="pagination"/>
+    </typeAliases>
     <environments default="development">
       <environment id="development">
         <transactionManager type="JDBC"/>
@@ -17,4 +24,8 @@
         </dataSource>
       </environment>
     </environments>
+    <mappers>
+        <mapper resource="db/mybatis/OrderMapper.xml"/>
+        <mapper resource="db/mybatis/UserMapper.xml"/>
+    </mappers>
 </configuration>
