@@ -2,8 +2,12 @@ package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.entity.Pagination;
 import com.github.hcsp.mybatis.entity.User;
-import java.util.List;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /** 与用户有关的增删改查操作 */
 public class UserDao {
@@ -22,7 +26,27 @@ public class UserDao {
      * @return 查找结果，若username为null，则返回所有用户的列表
      */
     public Pagination<User> getUserByPage(String username, int pageSize, int pageNum) {
-        return null;
+        Map<String, Object> param = new HashMap<>();
+        param.put("username", username);
+        param.put("pageSize", pageSize);
+        param.put("pageNum", pageNum);
+        List<User> userList = getUserList(param);
+        int totalPage = getTotalPageNum(param);
+        return Pagination.pageOf(userList, pageSize, pageNum, totalPage);
+    }
+
+    private List<User> getUserList(Map<String, Object> param) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            return sqlSession.selectList("userMapper.getUserByPage", param);
+        }
+    }
+
+    private int getTotalPageNum(Map<String, Object> param) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            int totalUserNum = sqlSession.selectOne("userMapper.getUserNumForPageNum", param);
+            int totalPage = totalUserNum / (int) param.get("pageSize");
+            return totalUserNum % (int) param.get("pageSize") == 0 ? totalPage : totalPage + 1;
+        }
     }
 
     /**
@@ -30,21 +54,35 @@ public class UserDao {
      *
      * @param users 待插入的用户列表
      */
-    public void batchInsertUsers(List<User> users) {}
+    public void batchInsertUsers(List<User> users) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            sqlSession.insert("userMapper.batchInsertUsers", users);
+        }
+    }
 
     /**
      * 根据用户的ID更新一个用户的数据，更新传入的user中所有不为null的字段。
      *
      * @param user 要修改的用户信息，其id必须不为null
      */
-    public void updateUser(User user) {}
+    public void updateUser(User user) {
+        if (user.getId() != null) {
+            try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+                sqlSession.update("userMapper.updateUser", user);
+            }
+        }
+    }
 
     /**
      * 删除一个用户。
      *
      * @param id 待删除的用户ID
      */
-    public void deleteUserById(Integer id) {}
+    public void deleteUserById(Integer id) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            sqlSession.delete("userMapper.deleteUser", id);
+        }
+    }
 
     /**
      * 根据ID获取一个用户，如果该用户不存在，返回null
@@ -53,6 +91,8 @@ public class UserDao {
      * @return 对应的用户
      */
     public User selectUserById(Integer id) {
-        return null;
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            return sqlSession.selectOne("userMapper.selectUserById", id);
+        }
     }
 }
