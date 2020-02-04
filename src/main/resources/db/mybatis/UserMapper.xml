@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.hcsp.mybatis.UserMapper">
+<!--    如果参数是多个，传递map进来，然后key就是sql里面的参数-->
+    <select id="getUserByPage" resultType="User">
+        select * from `USER`
+        <if test="username != null">
+            where name=#{username}
+        </if>
+        limit #{pageNum-1}*#{pageSize}, #{pageSize};
+    </select>
+
+    <select id="getUserTotal" resultType="java.lang.Integer">
+        select count(*) as count from `USER`
+        <if test="username != null">
+            where name=#{username}
+        </if>
+    </select>
+
+    <update id="updateUser" parameterType="User">
+        update `USER`
+            <trim prefix="set" suffixOverrides=",">
+                <if test="name!=null">NAME=#{name},</if>
+                <if test="address!=null">ADDRESS=#{address},</if>
+                <if test="tel!=null">TEL=#{tel},</if>
+                UPDATED_AT=now(),
+            </trim>
+        where ID=#{id};
+    </update>
+    <select id="selectUserById" resultType="User">
+        select * from `USER` where ID=#{id}
+    </select>
+    <delete id="deleteUserById">
+        delete from `USER` where ID=#{id}
+    </delete>
+
+    <insert id="batchInsertUsers">
+        insert into `USER`(NAME, TEL, ADDRESS) 
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+                #{item.name},
+                #{item.tel},
+                #{item.address}
+            )
+        </foreach>
+    </insert>
+</mapper>
