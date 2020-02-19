@@ -14,7 +14,7 @@
         <transactionManager type="JDBC"/>
         <dataSource type="POOLED">
             <property name="driver" value="org.h2.Driver"/>
-            <property name="url" value="jdbc:h2:file:/Users/Jason/Desktop/Java/practices/mybatis-in-action/target/test"/>
+            <property name="url" value="jdbc:h2:file:./target/test"/>
             <property name="username" value="root"/>
             <property name="password" value="Jxi1Oxc92qSj"/>
         </dataSource>
