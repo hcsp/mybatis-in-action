@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="db.mybatis.mapper">
+    <select id="selectUser" parameterType="map" resultType="User">
+        SELECT * FROM USER
+        <if test="NAME != null">
+            WHERE NAME = #{NAME}
+        </if>
+        LIMIT #{OFFSET},#{LIMIT}
+    </select>
+    <select id="countPageNums" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM USER
+        <if test="NAME != null">
+            WHERE NAME = #{NAME}
+        </if>
+    </select>
+    <insert id="insertUser" parameterType="map">
+        insert into USER (ID,NAME,TEL,ADDRESS)
+        values
+        <foreach item="user" collection="users" separator=",">
+            ( #{id},#{user.name}, #{user.tel}, #{user.address})
+        </foreach>
+    </insert>
+    <update id="updateUser" parameterType="User">
+        update USER
+        <set>
+            <if test="name != null">NAME=#{name},</if>
+            <if test="tel != null">TEL=#{tel},</if>
+            <if test="address != null">ADDRESS=#{address},</if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteUser" parameterType="int">
+        delete
+        from USER
+        where id = #{id}
+    </delete>
+    <select id="returnUser" parameterType="int" resultType="User">
+        SELECT *
+        FROM USER
+        WHERE ID = #{id}
+    </select>
+    <select id="selectOrder" resultMap="orderResultMap">
+        SELECT "ORDER".ID              AS ORDER_ID,
+               USER.NAME               AS USER_NAME,
+               GOODS.NAME              AS GOODS_NAME,
+               GOODS_PRICE * GOODS_NUM AS TOTALPRICE
+        FROM "ORDER"
+                 INNER JOIN USER ON "ORDER".USER_ID = USER.ID
+                 INNER JOIN GOODS ON "ORDER".GOODS_ID = GOODS.ID
+    </select>
+    <resultMap id="orderResultMap" type="Order">
+        <id property="id" column="ORDER_ID"/>
+        <result property="totalPrice" column="TOTALPRICE"/>
+        <association property="user" resultMap="userResultMap"/>
+        <association property="goods" resultMap="goodsResultMap"/>
+    </resultMap>
+    <resultMap id="userResultMap" type="User">
+        <id property="id" column="USER_ID"/>
+        <result property="name" column="USER_NAME"/>
+    </resultMap>
+    <resultMap id="goodsResultMap" type="Goods">
+        <id property="id" column="GOODS_ID"/>
+        <result property="name" column="GOODS_NAME"/>
+    </resultMap>
+</mapper>
