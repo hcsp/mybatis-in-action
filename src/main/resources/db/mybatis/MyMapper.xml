@@ -50,7 +50,6 @@
                         inner join USER u on o.USER_ID = u.ID
                 where g.NAME is not null and u.NAME is not null;
     </select>
-
     <resultMap id="Order" type="com.github.hcsp.mybatis.entity.Order">
         <result property="id" column="ORDER_ID"/>
         <result property="totalPrice" column="total_price"/>

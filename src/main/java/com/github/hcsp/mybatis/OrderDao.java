@@ -12,7 +12,6 @@ public class OrderDao {
     public OrderDao(SqlSessionFactory sqlSessionFactory) {
         this.sqlSessionFactory = sqlSessionFactory;
     }
-
     /**
      * 查询订单信息，只查询用户名、商品名齐全的订单，即INNER JOIN方式
      * 结果请参考：https://github.com/hcsp/practise-select-sql/blob/a450e2a/src/main/java/com/github/hcsp/sql/Sql.java#L172
