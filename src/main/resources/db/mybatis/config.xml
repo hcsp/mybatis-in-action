@@ -24,4 +24,5 @@
     <mappers>
         <mapper resource="db/mybatis/MyMapper.xml"></mapper>
     </mappers>
+
 </configuration>

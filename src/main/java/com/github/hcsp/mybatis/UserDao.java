@@ -54,6 +54,7 @@ public class UserDao {
             param.put("users", users);
             session.insert("MyMapper.batchInsertUsers", param);
         }
+
     }
 
     /**

@@ -24,7 +24,4 @@ public class OrderDao {
             return session.selectList("MyMapper.getInnerJoinOrders");
         }
     }
-
-
-
 }
