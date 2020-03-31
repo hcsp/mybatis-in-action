@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.hcsp.mybatis.mapper.OrderMapper">
+    <select id="selectOrders" resultMap="order" >
+    select a.ID as id,(a.GOODS_NUM * a.GOODS_PRICE)as total_price,b.name as user_name,c.name as order_name from `ORDER` a
+        inner join user b on a.USER_ID = b.ID
+        inner join GOODS c on a.GOODS_ID = c.ID;
+  </select>
+    <resultMap id="order" type="com.github.hcsp.mybatis.entity.Order">
+        <id column="id" property="id"/>
+        <result property="totalPrice" column="total_price"/>
+        <association property="user" javaType="com.github.hcsp.mybatis.entity.User">
+            <id property="id" column="id"/>
+            <result property="name" column="user_name" />
+        </association>
+        <association property="goods" javaType="com.github.hcsp.mybatis.entity.Goods">
+            <id property="id" column="id"/>
+            <result property="name" column="order_name"/>
+        </association>
+    </resultMap>
+</mapper>
