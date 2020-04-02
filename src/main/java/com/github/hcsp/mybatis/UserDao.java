@@ -32,8 +32,8 @@ public class UserDao {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, Object> map = new HashMap<>();
             map.put("username", username);
-            map.put("limit", (pageNum - 1) * pageSize);
-            map.put("offset", pageSize);
+            map.put("offset", (pageNum - 1) * pageSize);
+            map.put("limit", pageSize);
             List<User> users = session.selectList("MyMapper.getUserByPage", map);
             int count = session.selectOne("MyMapper.countUser", username);
             int totalPage = (count % pageSize == 0) ? count / pageSize : count / pageSize + 1;
