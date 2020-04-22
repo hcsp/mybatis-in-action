@@ -1,10 +1,7 @@
 package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.entity.Order;
-
 import java.util.List;
-
-import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 public class OrderDao {
@@ -21,11 +18,6 @@ public class OrderDao {
      * @return 所有的订单信息
      */
     public List<Order> getInnerJoinOrders() {
-        List<Order> list;
-        try (SqlSession session = sqlSessionFactory.openSession()) {
-            list = session.selectList("MyMapper.getInnerJoinOrders");
-            System.out.println(list.toString());
-        }
-        return list;
+        return null;
     }
 }
