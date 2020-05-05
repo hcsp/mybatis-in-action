@@ -2,8 +2,12 @@ package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.entity.Pagination;
 import com.github.hcsp.mybatis.entity.User;
-import java.util.List;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /** 与用户有关的增删改查操作 */
 public class UserDao {
@@ -22,7 +26,17 @@ public class UserDao {
      * @return 查找结果，若username为null，则返回所有用户的列表
      */
     public Pagination<User> getUserByPage(String username, int pageSize, int pageNum) {
-        return null;
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("username", username);
+            params.put("offset", (pageNum - 1) * pageSize);
+            params.put("limit", pageSize);
+            List<User> users = session.selectList("db.mybatis.MyMapper.getUserByPage", params);
+            int totalSize = session.selectOne("db.mybatis.MyMapper.getUserCount", username);
+            int totalPage = (totalSize % pageSize == 0) ? (totalSize / pageSize) : totalSize / pageSize + 1;
+
+            return Pagination.pageOf(users, pageSize, pageNum, totalPage);
+        }
     }
 
     /**
@@ -30,21 +44,33 @@ public class UserDao {
      *
      * @param users 待插入的用户列表
      */
-    public void batchInsertUsers(List<User> users) {}
+    public void batchInsertUsers(List<User> users) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            sqlSession.insert("db.mybatis.MyMapper.batchInsertUsers", users);
+        }
+    }
 
     /**
      * 根据用户的ID更新一个用户的数据，更新传入的user中所有不为null的字段。
      *
      * @param user 要修改的用户信息，其id必须不为null
      */
-    public void updateUser(User user) {}
+    public void updateUser(User user) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)){
+            sqlSession.update("db.mybatis.MyMapper.updateUser", user);
+        }
+    }
 
     /**
      * 删除一个用户。
      *
      * @param id 待删除的用户ID
      */
-    public void deleteUserById(Integer id) {}
+    public void deleteUserById(Integer id) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)){
+            sqlSession.delete("db.mybatis.MyMapper.deleteUserById", id);
+        }
+    }
 
     /**
      * 根据ID获取一个用户，如果该用户不存在，返回null
@@ -53,6 +79,8 @@ public class UserDao {
      * @return 对应的用户
      */
     public User selectUserById(Integer id) {
-        return null;
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()){
+            return sqlSession.selectOne("db.mybatis.MyMapper.selectUserById", id);
+        }
     }
 }
