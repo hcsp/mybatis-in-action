@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hcsp.MyMapper">
+    <select id="getUserByPage" parameterType="map" resultType="com.github.hcsp.mybatis.entity.User">
+        select * from USER
+        <where>
+            <if test="username!=null">
+             name = #{username}
+            </if>
+        </where>
+        limit #{offSet},#{limit}
+    </select>
+
+    <select id="countUsers" parameterType="string" resultType="int">
+        select count(*) from user
+        <where>
+            <if test="username!=null">
+                name = #{username}
+            </if>
+        </where>
+    </select>
+
+    <insert id="batchInsertUsers" parameterType="map">
+        insert into USER (name,tel,address)
+        values
+        <foreach item="item" index="index" collection="users"
+        separator=",">
+            (#{item.name},#{item.tel},#{item.address})
+        </foreach>
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        update USER
+        <set>
+            <if test="name!=null">name=#{name},</if>
+            <if test="tel!=null">tel=#{tel},</if>
+            <if test="address!=null">address=#{address}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectUserById" parameterType="int" resultType="User">
+        select * from USER
+        <where>
+            <if test="id!=null">
+                id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteUserById" parameterType="int">
+        delete from USER
+        <where>
+            <if test="id!=null">
+                id = #{id}
+            </if>
+        </where>
+    </delete>
+
+</mapper>
+
