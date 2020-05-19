@@ -70,7 +70,7 @@ public class UserDao {
      * @param id 待删除的用户ID
      */
     public void deleteUserById(Integer id) {
-        try (final SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             sqlSession.delete("com.hcsp.MyMapper.deleteUserById", id);
         }
     }
@@ -82,7 +82,7 @@ public class UserDao {
      * @return 对应的用户
      */
     public User selectUserById(Integer id) {
-        try (final SqlSession sqlSession = sqlSessionFactory.openSession()) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             return sqlSession.selectOne("com.hcsp.MyMapper.selectUserById", id);
         }
     }
