@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 /** 与用户有关的增删改查操作 */
@@ -74,12 +75,19 @@ public class UserDao {
         SqlSessionFactory sqlSessionFactory =
                 new SqlSessionFactoryBuilder().build(inputStream);
 
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
-            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-            System.out.println(mapper.getUsers());
-        }
+        User user = new User();
+        user.setId(3);
+        user.setName("Tony");
 
-g's't
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("name", "Tom");
+
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            System.out.println(sqlSession.selectList("com.hcsp.UserMapper.selectUser", map));
+
+//            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+//            System.out.println(mapper.getUsers());
+        }
 
 
 //        UserDao userDao = new UserDao(sqlSessionFactory);
