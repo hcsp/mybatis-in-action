@@ -2,8 +2,15 @@ package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.entity.Pagination;
 import com.github.hcsp.mybatis.entity.User;
-import java.util.List;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 /** 与用户有关的增删改查操作 */
 public class UserDao {
@@ -54,5 +61,31 @@ public class UserDao {
      */
     public User selectUserById(Integer id) {
         return null;
+    }
+
+    interface UserMapper {
+        @Select("select * from user")
+        List<User> getUsers();
+    }
+
+    public static void main(String[] args) throws IOException {
+        String resource = "db/mybatis/config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory =
+                new SqlSessionFactoryBuilder().build(inputStream);
+
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+            System.out.println(mapper.getUsers());
+        }
+
+g's't
+
+
+//        UserDao userDao = new UserDao(sqlSessionFactory);
+//
+//        User user = userDao.selectUserById(1);
+//        System.out.println(user.getName());
+
     }
 }
