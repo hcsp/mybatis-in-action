@@ -21,7 +21,6 @@
         </environment>
     </environments>
     <mappers>
-<!--        <mapper class="com.github.hcsp.mybatis.UserDao$UserMapper"/>-->
         <mapper resource="db/mybatis/UserMapper.xml"/>
     </mappers>
 </configuration>
