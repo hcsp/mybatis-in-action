@@ -2,12 +2,10 @@ package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.entity.Pagination;
 import com.github.hcsp.mybatis.entity.User;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.jupiter.api.Assertions;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,9 +36,9 @@ public class UserDao {
             param.put("username", username);
             param.put("offset", (pageNum - 1) * pageSize);
             param.put("limit", pageSize);
-            List<User> users = session.selectList("UserMapper.getUserByPage", param);
+            List<User> users = session.selectList("MyMapper.getUserByPage", param);
 
-            int count = session.selectOne("UserMapper.countUser", username);
+            int count = session.selectOne("MyMapper.countUser", username);
             int totalPage = (count % pageSize == 0) ? count / pageSize : count / pageSize + 1;
             return Pagination.pageOf(users, pageSize, pageNum, totalPage);
         }
@@ -52,10 +50,10 @@ public class UserDao {
      * @param users 待插入的用户列表
      */
     public void batchInsertUsers(List<User> users) {
-        try (final SqlSession session = sqlSessionFactory.openSession(true)) {
-            final HashMap<String, Object> param = new HashMap<>();
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
+            HashMap<String, Object> param = new HashMap<>();
             param.put("users", users);
-            session.insert("UserMapper.batchInsertUsers");
+            session.insert("MyMapper.batchInsertUsers", param);
         }
     }
 
@@ -65,8 +63,8 @@ public class UserDao {
      * @param user 要修改的用户信息，其id必须不为null
      */
     public void updateUser(User user) {
-        try (SqlSession session = sqlSessionFactory.openSession()) {
-            session.update("UserMapper.updateUser", user);
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
+            session.update("MyMapper.updateUser", user);
         }
     }
 
@@ -76,6 +74,9 @@ public class UserDao {
      * @param id 待删除的用户ID
      */
     public void deleteUserById(Integer id) {
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
+            session.delete("MyMapper.deleteUserById", id);
+        }
     }
 
     /**
@@ -85,12 +86,9 @@ public class UserDao {
      * @return 对应的用户
      */
     public User selectUserById(Integer id) {
-        return null;
-    }
-
-    interface UserMapper {
-        @Select("select * from user")
-        List<User> getUsers();
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
+            return session.selectOne("MyMapper.selectUserById", id);
+        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -98,14 +96,6 @@ public class UserDao {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory =
                 new SqlSessionFactoryBuilder().build(inputStream);
-
         UserDao userDao = new UserDao(sqlSessionFactory);
-
-        Pagination<User> users = userDao.getUserByPage(null, 100, 1);
-        Assertions.assertEquals(1, users.getPageNum());
-        Assertions.assertEquals(100, users.getPageSize());
-        Assertions.assertEquals(1, users.getTotalPage());
-        Assertions.assertTrue(users.getItems().size() > 3);
-
     }
 }
