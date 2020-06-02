@@ -2,13 +2,12 @@ package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.entity.Pagination;
 import com.github.hcsp.mybatis.entity.User;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 
 /**
  * 与用户有关的增删改查操作
@@ -51,9 +50,9 @@ public class UserDao {
      */
     public void batchInsertUsers(List<User> users) {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("users", users);
-            session.insert("MyMapper.batchInsertUsers", map);
+            Map<String, Object> param = new HashMap<>();
+            param.put("users", users);
+            session.insert("MyMapper.batchInsertUsers", param);
         }
     }
 

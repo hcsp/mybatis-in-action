@@ -18,6 +18,6 @@
       </environment>
     </environments>
     <mappers>
-        <mapper resource="db/mybaits/Mapper.xml"/>
+        <mapper resource="db/mybatis/MyMapper.xml"/>
     </mappers>
 </configuration>
