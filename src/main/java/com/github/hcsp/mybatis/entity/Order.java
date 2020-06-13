@@ -12,10 +12,6 @@ public class Order {
     /** 订单中的总成交金额 */
     private BigDecimal totalPrice;
 
-    public Order(Integer id) {
-        this.id = id;
-    }
-
     public Integer getId() {
         return id;
     }
