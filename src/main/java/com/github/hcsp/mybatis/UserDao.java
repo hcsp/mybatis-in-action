@@ -2,16 +2,16 @@ package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.entity.Pagination;
 import com.github.hcsp.mybatis.entity.User;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-
-/** 与用户有关的增删改查操作 */
+/**
+ * 与用户有关的增删改查操作
+ */
 public class UserDao {
     private final SqlSessionFactory sqlSessionFactory;
 
@@ -29,12 +29,15 @@ public class UserDao {
      */
     public Pagination<User> getUserByPage(String username, int pageSize, int pageNum) {
         Pagination<User> result = null;
-        Map map = new HashMap<String,Object>();
-        map.add(username,username);
-        map.add(pageSize);
-        map.add(pageNum);
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", username);
+        map.put("offset", (pageSize - 1) * pageNum);
+        map.put("limit", pageNum);
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            result = (Pagination<User>) session.selectList("com.github.hcsp.mybatis.getUserByPage", para);
+            List<User> users = session.selectList("com.github.hcsp.mybatis.getUserByPage", map);
+            int count = session.selectOne("com.github.hcsp.mybatis.totalPage");
+            int totalPage = count / pageSize == 0 ? count / pageSize : count / pageSize + 1;
+            result = Pagination.pageOf(users, pageSize, pageNum, totalPage);
         }
         return result;
     }
@@ -45,7 +48,7 @@ public class UserDao {
      * @param users 待插入的用户列表
      */
     public void batchInsertUsers(List<User> users) {
-        try (SqlSession session = sqlSessionFactory.openSession()) {
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
             session.insert("com.github.hcsp.mybatis.batchInsertUsers", users);
         }
     }
@@ -56,7 +59,7 @@ public class UserDao {
      * @param user 要修改的用户信息，其id必须不为null
      */
     public void updateUser(User user) {
-        try (SqlSession session = sqlSessionFactory.openSession()) {
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
             session.update("com.github.hcsp.mybatis.updateUser", user);
         }
     }
@@ -67,7 +70,7 @@ public class UserDao {
      * @param id 待删除的用户ID
      */
     public void deleteUserById(Integer id) {
-        try (SqlSession session = sqlSessionFactory.openSession()) {
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
             session.delete("com.github.hcsp.mybatis.deleteUserById", id);
         }
     }
