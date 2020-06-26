@@ -14,25 +14,19 @@
   </delete>
   
   <update id="updateUser" parameterType="com.github.hcsp.mybatis.entity.User">
-    update user set
-    <if test="#{id} != null">
-      id = #{id},
-      <if test="#{name} != null">
-        name = #{name},
-      </if>
-      <if test="#{tell} != null">
-        tel = #{tel},
-      </if>
-      <if test="#{address} != null">
-        address = #{address}
-      </if>
-    </if>
+    update user 
+    <set>
+    <if test="name != null">name = #{name},</if>
+    <if test="tel != null">tel = #{tel},</if>
+    <if test="address != null">address = #{address}</if>
+    </set>    
+      where id = #{id}
   </update>
   
   <insert id="batchInsertUsers" parameterType="com.github.hcsp.mybatis.entity.User">
-    insert into user (id, name, tel, address) values
+    insert into user (name, tel, address) values
     <foreach item = "user" collection="list" separator=",">
-    (#{user.id}, #{user.name}, #{user.tel}, #{user.address})
+    (#{user.name}, #{user.tel}, #{user.address})
     </foreach>
   </insert>
   
@@ -44,8 +38,11 @@
     </if>
   </select>
 
-  <select id="totalPage" resultType="int">
+  <select id="totalPage" parameterType="String" resultType="int">
     select count(*) from user
+    <if test="username != null">
+      where name = #{username}
+    </if>
   </select>
   
   

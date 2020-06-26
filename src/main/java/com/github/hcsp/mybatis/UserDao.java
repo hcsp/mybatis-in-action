@@ -35,8 +35,8 @@ public class UserDao {
         map.put("limit", pageNum);
         try (SqlSession session = sqlSessionFactory.openSession()) {
             List<User> users = session.selectList("com.github.hcsp.mybatis.getUserByPage", map);
-            int count = session.selectOne("com.github.hcsp.mybatis.totalPage");
-            int totalPage = count / pageSize == 0 ? count / pageSize : count / pageSize + 1;
+            int count = session.selectOne("com.github.hcsp.mybatis.totalPage", username);
+            int totalPage = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
             result = Pagination.pageOf(users, pageSize, pageNum, totalPage);
         }
         return result;
@@ -59,8 +59,10 @@ public class UserDao {
      * @param user 要修改的用户信息，其id必须不为null
      */
     public void updateUser(User user) {
-        try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            session.update("com.github.hcsp.mybatis.updateUser", user);
+        if (user.getId() != null) {
+            try (SqlSession session = sqlSessionFactory.openSession(true)) {
+                session.update("com.github.hcsp.mybatis.updateUser", user);
+            }
         }
     }
 
