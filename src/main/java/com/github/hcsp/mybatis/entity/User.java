@@ -55,6 +55,7 @@ public class User {
                 + '}';
     }
 
+    public User() {}
 
     public User(Integer id, String name, String tel, String address) {
         this.id = id;
