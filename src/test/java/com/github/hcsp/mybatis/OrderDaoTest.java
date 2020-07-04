@@ -5,10 +5,12 @@ import static com.github.hcsp.mybatis.UserDaoTest.getSqlSessionFactoryAfterFlywa
 import com.github.hcsp.mybatis.entity.Goods;
 import com.github.hcsp.mybatis.entity.Order;
 import com.github.hcsp.mybatis.entity.User;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
