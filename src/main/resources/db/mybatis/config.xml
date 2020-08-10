@@ -17,8 +17,4 @@
         </dataSource>
       </environment>
     </environments>
-    <mappers>
-        <mapper resource="db/mybatis/OrderDaoMapper.xml"/>
-        <mapper resource="db/mybatis/UserDaoMapper.xml"/>
-    </mappers>
 </configuration>
