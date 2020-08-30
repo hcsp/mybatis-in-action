@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MyMapper">
+    <select id="getUser" parameterType="map" resultType="User">
+        select id,name,tel,address
+        from user
+        <if test="username != null">
+            where name = #{username}
+        </if>
+        limit #{offset},#{limit}
+    </select>
+    <select id="getTotal" parameterType="String" resultType="int">
+        select count(*) from user
+        <if test="username != null">
+            where name = #{username};
+        </if>
+    </select>
+    <insert id="batchInsertUsers" parameterType="map">
+        insert into user (name,tel,address)
+        values
+        <!--
+        collection 代表传入的集合名
+        item属性代表collection中的每一个元素,可以用"." 来获取元素中的信息
+        -->
+        <foreach item="user" collection="users" separator=",">
+            (#{user.name},#{user.tel},#{user.address})
+        </foreach>
+    </insert>
+    <update id="updateUser" parameterType="User">
+        update user
+        set
+        <if test="name != null">name = #{name}</if>
+        <if test="tel != null">tel = #{tel}</if>
+        <if test="address != null">address = #{address}</if>
+        where id = #{id}
+    </update>
+    <delete id="deleteUser" parameterType="int">
+        delete from user where ID = #{id}
+    </delete>
+    <select id="getUserAccordingId" parameterType="int" resultType="User">
+        select id,name,tel,address from user where id = #{id}
+    </select>
+    <select id="getInnerJoinOrders" resultMap="Order">
+        select
+        "ORDER".id as order_id
+        , USER.id as user_id
+        , USER.name  as user_name
+        , GOODS.id as goods_id
+        , GOODS.name as goods_name
+        , GOODS.PRICE as goods_price
+        , (GOODS_PRICE * GOODS_NUM) as total_price
+        from "ORDER"
+            inner join GOODS on "ORDER".GOODS_ID = GOODS.ID
+            inner join USER on "ORDER".USER_ID = USER.id
+        where GOODS.NAME is not null and USER.name is not null
+    </select>
+    <!-- 非常复杂的结果映射 -->
+    <resultMap id="Order" type="Order">
+        <result property="id" column="order_id"/>
+        <result property="totalPrice" column="total_price"/>
+        <association property="user" javaType="User">
+            <result property="id" column="user_id"/>
+            <result property="name" column="user_name"/>
+        </association>
+        <association property="goods" javaType="Goods">
+            <result property="id" column="goods_id"/>
+            <result property="name" column="goods_name"/>
+            <result property="price" column="goods_price"/>
+        </association>
+    </resultMap>
+</mapper>
