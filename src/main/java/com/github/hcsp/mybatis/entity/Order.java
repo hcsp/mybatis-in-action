@@ -2,22 +2,14 @@ package com.github.hcsp.mybatis.entity;
 
 import java.math.BigDecimal;
 
-/**
- * 一个订单
- */
+/** 一个订单 */
 public class Order {
     private Integer id;
-    /**
-     * 订单中的用户
-     */
+    /** 订单中的用户 */
     private User user;
-    /**
-     * 订单中的商品
-     */
+    /** 订单中的商品 */
     private Goods goods;
-    /**
-     * 订单中的总成交金额
-     */
+    /** 订单中的总成交金额 */
     private BigDecimal totalPrice;
 
     public Integer getId() {

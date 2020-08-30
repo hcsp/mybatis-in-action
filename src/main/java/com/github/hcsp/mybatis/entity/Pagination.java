@@ -2,9 +2,7 @@ package com.github.hcsp.mybatis.entity;
 
 import java.util.List;
 
-/**
- * 数据库的分页结果，
- */
+/** 数据库的分页结果， */
 public class Pagination<T> {
     private final List<T> items;
     private final int pageSize;
