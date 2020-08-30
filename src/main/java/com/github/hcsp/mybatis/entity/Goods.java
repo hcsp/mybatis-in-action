@@ -2,7 +2,9 @@ package com.github.hcsp.mybatis.entity;
 
 import java.math.BigDecimal;
 
-/** 一件商品 */
+/**
+ * 一件商品
+ */
 public class Goods {
     private Integer id;
     private String name;
