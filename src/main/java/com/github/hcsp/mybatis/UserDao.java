@@ -2,13 +2,12 @@ package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.entity.Pagination;
 import com.github.hcsp.mybatis.entity.User;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 
 /**
  * 与用户有关的增删改查操作
