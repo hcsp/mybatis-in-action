@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Mapper">
+    <select id="getUserByPage" parameterType="map" resultType="User">
+        select id, name, tel, address from USER
+        <if test="username!=null">
+            where NAME=#{username}
+        </if>
+        limit #{offset},#{limit}
+    </select>
+
+    <select id="countUser" parameterType="String" resultType="int">
+        select count(*) from USER
+        <if test="username!=null">
+            where NAME=#{username}
+        </if>
+    </select>
+    <insert id="batchInsertUsers" parameterType="map">
+        insert into USER(name, tel, address)
+        values
+        <foreach item="user" collection="users" separator=",">
+            (#{user.name},#{user.tel},#{user.address})
+        </foreach>
+    </insert>
+    <update id="updateUser" parameterType="User">
+        <if test="id!=null">
+            update USER
+            <set>
+                <if test="name != null">name=#{name},</if>
+                <if test="tel != null">tel=#{tel},</if>
+                <if test="address != null">address=#{address}</if>
+            </set>
+            where id=#{id}
+        </if>
+    </update>
+    <select id="selectUserById" parameterType="int" resultType="User">
+        select *
+        from USER
+        where ID = #{id}
+    </select>
+    <select id="isNoEmpty" parameterType="int" resultType="boolean">
+        select *
+        from USER
+        where ID = #{id}
+    </select>
+    <delete id="deleteUserById" parameterType="int">
+        delete
+        from USER
+        where ID = #{id}
+    </delete>
+    <select id="getInnerJoinOrders" resultMap="order">
+        select "ORDER".ID                                              as order_id,
+               USER.NAME                                               as user_name,
+               GOODS.NAME                                              as goods_name,
+               cast("ORDER".GOODS_NUM * "ORDER".GOODS_PRICE as bigint) as total_price
+        from "ORDER"
+                 inner join USER
+                            on "ORDER".USER_ID = USER.ID
+                 inner join GOODS
+                            on "ORDER".GOODS_ID = GOODS.ID
+        group by "ORDER".ID
+    </select>
+    <resultMap id="order" type="Order">
+        <result property="id" column="ORDER_ID"></result>
+        <result property="totalPrice" column="total_price"></result>
+        <association property="user" javaType="User">
+            <result property="name" column="user_name"></result>
+        </association>
+        <association property="goods" column="Goods">
+            <result property="name" column="goods_name"></result>
+        </association>
+    </resultMap>
+
+</mapper>
