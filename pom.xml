@@ -101,23 +101,22 @@
             </plugin>
             <plugin>
                 <groupId>org.flywaydb</groupId>
-<artifactId>flyway-maven-plugin</artifactId>
-<version>6.0.6</version>
-<executions>
-    <execution>
-        <id>test-database-setup</id>
-        <phase>initialize</phase>
-        <goals>
-            <goal>migrate</goal>
-        </goals>
-        <configuration>
-            <url>jdbc:h2:file:${project.basedir}/target/test</url>
-            <user>root</user>
-            <password>Jxi1Oxc92qSj</password>
-        </configuration>
-    </execution>
-</executions>
-
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.0.6</version>
+                <executions>
+                    <execution>
+                        <id>test-database-setup</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                        <configuration>
+                            <url>jdbc:h2:file:${project.basedir}/target/test</url>
+                            <user>root</user>
+                            <password>Jxi1Oxc92qSj</password>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
                 <plugin>
                     <artifactId>maven-checkstyle-plugin</artifactId>
