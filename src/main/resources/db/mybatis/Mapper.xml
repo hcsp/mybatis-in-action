@@ -1,0 +1,70 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.su.Mapper">
+    <select id="selectUserName" resultType="User">
+        select ID,NAME,TEL,ADDRESS from USER
+        <if test="username!=null">
+            where USER.NAME= #{username}
+            limit #{limit} offset #{offset}
+        </if>
+    </select>
+    <select id="selectCountUser" parameterType="String" resultType="int">
+        select count(*) from USER
+        <if test="username!=null">
+            where USER.NAME= #{username}
+        </if>
+    </select>
+    <select id="selectUserById" parameterType="int" resultType="User">
+        select ID, NAME, TEL, ADDRESS
+        from USER
+        where USER.ID = #{id}
+    </select>
+    <insert id="batchInsertUsers" parameterType="map">
+        insert into USER (NAME, TEL, ADDRESS)
+        values
+        <foreach collection="users" item="user" separator=",">
+            (#{user.name},#{user.tel},#{user.address})
+        </foreach>
+    </insert>
+    <update id="updateUser" parameterType="User">
+        <if test="id!=null">
+            update USER
+            <set>
+                <if test="name != null">USER.NAME= #{name},</if>
+                <if test="tel != null">USER.TEL = #{tel},</if>
+                <if test="address != null">USER.ADDRESS = #{address}</if>
+            </set>
+            where USER.ID= #{id}
+        </if>
+    </update>
+    <delete id="deleteUserById" parameterType="int">
+        delete
+        from USER
+        where USER.ID = #{id}
+    </delete>
+    <select id="getInnerJoinOrders" resultMap="Order">
+        select O.ID as order_id, U.NAME as user_name, U.ID as user_id,
+               G.NAME as goods_name, G.PRICE as goods_price, G.ID as goods_id,
+               (O.GOODS_PRICE * O.GOODS_NUM) as totalPrice
+        from "ORDER" as O
+        join USER U  on U.ID = O.USER_ID
+        join GOODS G on G.ID = O.GOODS_ID
+        where G.NAME is not null and U.NAME is not null
+    </select>
+
+    <resultMap id="Order" type="Order">
+        <result property="id" column="order_id"/>
+        <result property="totalPrice" column="totalPrice"/>
+        <association property="user" javaType="User">
+            <result property="id" column="user_id"/>
+            <result property="name" column="user_name"/>
+        </association>
+        <association property="goods" javaType="Goods">
+            <result property="id" column="goods_id"/>
+            <result property="name" column="goods_name"/>
+            <result property="price" column="goods_price"/>
+        </association>
+    </resultMap>
+</mapper>
