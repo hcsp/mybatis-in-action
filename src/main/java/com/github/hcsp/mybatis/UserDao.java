@@ -72,8 +72,8 @@ public class UserDao {
      * @param id 待删除的用户ID
      */
     public void deleteUserById(Integer id) {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)){
-           sqlSession.delete("MyMapper.deleteUser",id);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+            sqlSession.delete("MyMapper.deleteUser", id);
         }
     }
 
@@ -84,7 +84,7 @@ public class UserDao {
      * @return 对应的用户
      */
     public User selectUserById(Integer id) {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()){
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             return sqlSession.selectOne("MyMapper.selectUserById", id);
         }
     }
