@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MyMapper">
+    <select id="getUserByPage" parameterType="map" resultType="User">
+        select id,name,tel,address
+        from user
+        <if test="username != null">
+            where name = #{username}
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="counterUser" parameterType="string" resultType="int">
+        select count (*)
+        from user
+        <if test="username != null">
+            where name = #{username}
+        </if>
+    </select>
+
+    <insert id="batchInsertUsers" parameterType="map">
+        insert into user (name,tel,address)
+        values
+        <foreach collection="users" item="user" separator=",">
+            (#{user.name},#{user.tel},#{user.address})
+        </foreach>
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        update user
+        <set>
+            <if test="name != null">name=#{name},</if>
+            <if test="tel != null">tel=#{tel},</if>
+            <if test="address != null">address=#{address}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        delete user where id = #{id}
+    </delete>
+
+    <select id="selectUserById" parameterType="int" resultType="User">
+        select id,name,tel,address
+        from user
+        where id = #{id}
+    </select>
+
+    <select id="getInnerJoinOrders" resultMap="OrderMap">
+        select
+            o.id as order_id,
+            u.name as user_name,
+            u.id as user_id,
+            g.name as goods_name,
+            g.price as goods_price,
+            (o.goods_num * o.goods_price) as totalPrice
+        from "ORDER" o
+            inner join goods g on o.goods_id = g.id
+            inner join user u on o.user_id = u.id
+    </select>
+    <resultMap id="OrderMap" type="Order">
+        <result property="id" column="order_id"/>
+        <result property="totalPrice" column="totalPrice"/>
+        <association property="user" javaType="User">
+            <result property="name" column="user_name"/>
+            <result property="id" column="user_id"/>
+        </association>
+        <association property="goods" javaType="Goods">
+            <result property="name" column="goods_name"/>
+            <result property="price" column="goods_price"/>
+        </association>
+    </resultMap>
+</mapper>
