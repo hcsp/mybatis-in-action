@@ -9,7 +9,7 @@ public class Pagination<T> {
     private final int pageNum;
     private final int totalPage;
 
-    public Pagination(List<T> items, int pageSize, int pageNum, int totalPage) {
+    private Pagination(List<T> items, int pageSize, int pageNum, int totalPage) {
         this.items = items;
         this.pageSize = pageSize;
         this.pageNum = pageNum;
