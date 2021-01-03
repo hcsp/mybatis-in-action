@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="myMapper">
+    <select id="selectUserList" resultType="USER">
+        select * from USER
+        <if test="username != null">
+            where name = #{username}
+        </if>
+        limit #{limit}
+        offset #{offset};
+    </select>
+    <insert id="insertUser" parameterType="List">
+        insert into USER (id,name,tel,address,created_at,updated_at) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.name},#{item.tel},#{item.address},now(),now())
+        </foreach>
+    </insert>
+    <update id="updateUser" parameterType="USER">
+          update USER set
+    id = #{id},
+    name = #{name},
+    tel = #{tel},
+    address = #{address}
+  where id = #{id}
+    </update>
+    <delete id="deleteUserById">
+        DELETE FROM USER
+WHERE id=#{id}
+    </delete>
+    <select id="selectUserById" resultType="USER">
+        select * from USER where id = #{id}
+    </select>
+    <resultMap id="orders" type="Order">
+        <result property="id" column="id"></result>
+        <result property="totalPrice" column="total_price"></result>
+        <association property="user" javaType="USER">
+            <result property="id" column="user_id"></result>
+            <result property="name" column="user_name"></result>
+            <result property="tel" column="user_tel"></result>
+            <result property="address" column="user_address"></result>
+        </association>
+        <association property="goods" javaType="Goods">
+            <result property="id" column="goods_id"></result>
+            <result property="name" column="goods_name"></result>
+            <result property="price" column="goods_price"></result>
+        </association>
+    </resultMap>
+    <select id="innerJoinTable" resultMap="orders">
+        select "ORDER".id as id,
+        "ORDER".user_id as user_id,
+        "ORDER".goods_id as goods_id,
+        "ORDER".goods_num*"ORDER".goods_price as total_price,
+        user.name as user_name,
+        user.tel as user_tel,
+        user.address as user_address,
+        G2.name as goods_name,
+        G2.price as goods_price
+        from "ORDER" inner join user on "ORDER".USER_ID=USER.ID inner join GOODS G2 on "ORDER".GOODS_ID = G2.ID
+    </select>
+
+</mapper>

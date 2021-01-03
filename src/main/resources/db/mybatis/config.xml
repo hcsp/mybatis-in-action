@@ -3,9 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
     <settings>
         <setting name="logImpl" value="LOG4J"/>
     </settings>
+    <typeAliases>
+        <typeAlias alias="User" type="com.github.hcsp.mybatis.entity.User"/>
+        <typeAlias alias="Goods" type="com.github.hcsp.mybatis.entity.Goods"/>
+        <typeAlias alias="Order" type="com.github.hcsp.mybatis.entity.Order"/>
+        <typeAlias alias="Pagination" type="com.github.hcsp.mybatis.entity.Pagination"/>
+    </typeAliases>
     <environments default="development">
       <environment id="development">
         <transactionManager type="JDBC"/>
@@ -17,4 +24,8 @@
         </dataSource>
       </environment>
     </environments>
+
+    <mappers>
+        <mapper resource="db/mybatis/myMapper.xml"/>
+    </mappers>
 </configuration>
