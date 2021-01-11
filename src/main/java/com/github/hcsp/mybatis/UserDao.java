@@ -49,7 +49,7 @@ public class UserDao {
      * @param users 待插入的用户列表
      */
     public void batchInsertUsers(List<User> users) {
-        try(SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             int insert = sqlSession.insert("MyMapper.batchImportUsers", users);
             System.out.println(insert + "-批处理结果");
         }
