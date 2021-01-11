@@ -36,7 +36,7 @@ public class UserDao {
             //返回本次查询总记录数
             int count = session.selectOne("MyMapper.countUser", username);
             //返回总页数
-            int totalPage = (count % pageSize == 0) ? count / pageSize : count/pageSize + 1;
+            int totalPage = (count % pageSize == 0) ? count / pageSize : count / pageSize + 1;
 
             return Pagination.pageOf(users, pageSize, pageNum, totalPage);
         }
