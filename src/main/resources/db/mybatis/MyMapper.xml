@@ -2,12 +2,39 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.mybatis.example.MyMapper">
-    <select id="getUserByPage" resultType="Pagination">
+<mapper namespace="MyMapper">
+    <select id="getUsersNameNotNull" resultType="User">
         select * from USER
-        <if test="name != null">
-            where USER.name = name
+        <if test="username != null">
+            where name = #{username}
         </if>
-        offset
+        limit #{offset}, #{limit}
     </select>
+    <select id="getUserCount" resultType="int">
+        select count(*) from USER
+        <if test="username != null">
+            where name = #{username}
+        </if>
+    </select>
+    <insert id="batchInsertUsers">
+        insert into user(name, tel, address) values
+        <foreach item="item" collection="users" separator=",">
+            (#{item.name},#{item.tel},#{item.address})
+        </foreach>
+    </insert>
+    <update id="updateUser">
+        update user
+        <set>
+            <if test="item.name != null">
+                name = #{item.name},
+            </if>
+            <if test="item.address != null">
+                address = #{item.address},
+            </if>
+            <if test="item.tel != null">
+                tel = #{item.tel}
+            </if>
+        </set>
+        where id = #{item.id}
+    </update>
 </mapper>

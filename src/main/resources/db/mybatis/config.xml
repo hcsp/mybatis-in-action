@@ -24,6 +24,7 @@
         </environment>
     </environments>
     <mappers>
-        <mapper resource="db.mybatis/config.xml"/>
+        <mapper resource="db/mybatis/MyMapper.xml"/>
+        <package name="com.github.hcsp.mybatis.Mapper"/>
     </mappers>
 </configuration>

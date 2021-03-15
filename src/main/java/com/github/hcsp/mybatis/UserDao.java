@@ -1,11 +1,13 @@
 package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.Mapper.DeleteUserMapper;
-import com.github.hcsp.mybatis.Mapper.SelectUserByIDMapper;
+import com.github.hcsp.mybatis.Mapper.SelectUserMapper;
 import com.github.hcsp.mybatis.entity.Pagination;
 import com.github.hcsp.mybatis.entity.User;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -30,7 +32,15 @@ public class UserDao {
      */
     public Pagination<User> getUserByPage(String username, int pageSize, int pageNum) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            return null;
+            Map<String, Object> map = new HashMap<>();
+            map.put("username", username);
+            map.put("offset", pageSize * (pageNum - 1));
+            map.put("limit", pageSize);
+            List<User> users = session.selectList("MyMapper.getUsersNameNotNull", map);
+
+            int count = session.selectOne("MyMapper.getUserCount", username);
+            int totalPage = (int) Math.ceil(1.0 * count / pageSize);
+            return Pagination.pageOf(users, pageSize, pageNum, totalPage);
         }
     }
 
@@ -40,6 +50,12 @@ public class UserDao {
      * @param users 待插入的用户列表
      */
     public void batchInsertUsers(List<User> users) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("users", users);
+            session.insert("MyMapper.batchInsertUsers", map);
+            session.commit();
+        }
     }
 
     /**
@@ -48,6 +64,12 @@ public class UserDao {
      * @param user 要修改的用户信息，其id必须不为null
      */
     public void updateUser(User user) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("item", user);
+            session.insert("MyMapper.updateUser", map);
+            session.commit();
+        }
     }
 
     /**
@@ -58,7 +80,8 @@ public class UserDao {
     public void deleteUserById(Integer id) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             DeleteUserMapper mapper = session.getMapper(DeleteUserMapper.class);
-            mapper.deleteUserById(id);
+            mapper.deleteUserByID(id);
+            session.commit();
         }
     }
 
@@ -70,7 +93,7 @@ public class UserDao {
      */
     public User selectUserById(Integer id) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            SelectUserByIDMapper mapper = session.getMapper(SelectUserByIDMapper.class);
+            SelectUserMapper mapper = session.getMapper(SelectUserMapper.class);
             return mapper.selectUserById(id);
         }
     }
