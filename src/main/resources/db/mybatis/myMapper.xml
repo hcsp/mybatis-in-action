@@ -26,11 +26,11 @@
     </insert>
 
     <update id="updateUser" parameterType="user">
-        update user set id = #{id}
+        update user
         <set>
-            <if test="name != null">name=#{name},</if>
-            <if test="tel != null">tel=#{tel},</if>
-            <if test="address != null">address=#{address},</if>
+            <if test="name != null">name=#{name}</if>
+            <if test="tel != null">tel=#{tel}</if>
+            <if test="address != null">address=#{address}</if>
         </set>
         where id=#{id}
     </update>

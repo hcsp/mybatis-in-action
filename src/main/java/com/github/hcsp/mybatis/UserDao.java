@@ -61,15 +61,8 @@ public class UserDao {
      * @param user 要修改的用户信息，其id必须不为null
      */
     public void updateUser(User user) {
-        try (SqlSession session = sqlSessionFactory.openSession()) {
-            if (user.getId() == null) {
-                throw new RuntimeException("用户id不能为null");
-            }
-            session.update("MyMapper.updateUsersNotNull", user);
-            session.commit();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        sqlSession.update("MyMapper.updateUser", user);
     }
 
     /**
@@ -91,7 +84,7 @@ public class UserDao {
      */
     public User selectUserById(Integer id) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            return session.selectOne("MyMapper.deleteUserById", id);
+            return session.selectOne("MyMapper.selectUserById", id);
         }
     }
 }
