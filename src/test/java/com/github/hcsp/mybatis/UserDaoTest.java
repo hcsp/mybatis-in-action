@@ -18,6 +18,11 @@ import org.junit.jupiter.api.Test;
 public class UserDaoTest {
     private UserDao userDao;
 
+    @Test
+    public void myTest() {
+        userDao.getUserByPage(null, 1, 1);
+    }
+
     @BeforeEach
     public void setUp() throws Exception {
         userDao = new UserDao(getSqlSessionFactoryAfterFlywayCleanMigrate());
