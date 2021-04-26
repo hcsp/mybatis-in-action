@@ -1,11 +1,8 @@
 package com.github.hcsp.mybatis.entity;
 
-import org.apache.ibatis.type.Alias;
-
 import java.math.BigDecimal;
 
 /** 一个订单 */
-@Alias("order")
 public class Order {
     private Integer id;
     /** 订单中的用户 */

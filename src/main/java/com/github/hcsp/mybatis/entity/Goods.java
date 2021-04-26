@@ -1,11 +1,8 @@
 package com.github.hcsp.mybatis.entity;
 
-import org.apache.ibatis.type.Alias;
-
 import java.math.BigDecimal;
 
 /** 一件商品 */
-@Alias("goods")
 public class Goods {
     private Integer id;
     private String name;
