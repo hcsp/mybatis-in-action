@@ -15,7 +15,7 @@ public interface UserMapper {
     @Select("select count(*) from user")
     int count();
 
-    @Select("select * from user")
+    @Select("<script> select * from user where 1=1 <if test='userName != null'> and name =#{userName} </if></script> ")
     List<User> query(String userName);
 
 }

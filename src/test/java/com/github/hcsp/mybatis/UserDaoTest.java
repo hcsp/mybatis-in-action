@@ -20,7 +20,7 @@ public class UserDaoTest {
 
     @Test
     public void myTest() {
-        userDao.getUserByPage(null, 1, 1);
+        System.out.println(userDao.getUserByPage("zhangsan", 1, 1));
     }
 
     @BeforeEach
