@@ -1,5 +1,8 @@
 package com.github.hcsp.mybatis.entity;
-/** 一个用户 */
+
+/**
+ * 一个用户
+ */
 public class User {
     private Integer id;
     private String name;
@@ -55,7 +58,8 @@ public class User {
                 + '}';
     }
 
-    public User() {}
+    public User() {
+    }
 
     public User(Integer id, String name, String tel, String address) {
         this.id = id;
