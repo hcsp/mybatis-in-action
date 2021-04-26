@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.hcsp.mybatis.OrderMapper">
+    <select id="getInnerJoinOrders" resultMap="detailOrderResultMap">
+        select o.ID                  as orderId,
+       (o.GOODS_NUM * o.GOODS_PRICE) as totalPrice,
+       u.ID                          as userId,
+       u.NAME                        as userName,
+       u.TEL                         as userTel,
+       u.ADDRESS                     as userAddress,
+       g.ID                          as goodsId,
+       g.NAME                        as goodsName,
+       g.PRICE                       as goodsPrice
+            from "ORDER" o
+         inner join USER u on o.USER_ID = u.ID
+         inner join GOODS g on o.GOODS_ID = g.ID
+    </select>
+    <resultMap id="detailOrderResultMap" type="order">
+        <id property="id" column="orderId"></id>
+        <result property="totalPrice" column="totalPrice"/>
+        <association property="user" javaType="user">
+            <id property="id" column="userId"/>
+            <result property="name" column="userName"/>
+            <result property="tel" column="userTel"/>
+            <result property="address" column="userAddress"/>
+        </association>
+        <association property="goods" javaType="goods">
+            <id property="id" column="goodsId"/>
+            <result property="name" column="goodsName"/>
+            <result property="price" column="goodsPrice"/>
+        </association>
+    </resultMap>
+</mapper>

@@ -6,6 +6,10 @@
     <settings>
         <setting name="logImpl" value="LOG4J"/>
     </settings>
+    <typeAliases>
+        <typeAlias alias="user" type="com.github.hcsp.mybatis.entity.User"/>
+        <package name="com.github.hcsp.mybatis.entity"/>
+    </typeAliases>
     <plugins>
         <!-- com.github.pagehelper为PageHelper类所在包名 -->
         <plugin interceptor="com.github.pagehelper.PageInterceptor">
@@ -26,5 +30,7 @@
     </environments>
     <mappers>
         <mapper class="com.github.hcsp.mybatis.UserMapper"/>
+        <mapper resource="db\mybatis\UserMapper.xml"/>
+        <mapper resource="db\mybatis\OrderMapper.xml"/>
     </mappers>
 </configuration>
