@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="db.mapper.OrderMapper">
+    <resultMap id="detailedOrderResultMap" type="Order">
+        <constructor>
+            <idArg column="id" javaType="Integer"/>
+        </constructor>
+        <result property="totalPrice" column="totalPrice"/>
+        <association property="user" javaType="User">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+            <result property="tel" column="tel"/>
+            <result property="address" column="address"/>
+        </association>
+        <association property="goods" javaType="Goods">
+            <id property="id" column="id"/>
+            <result property="name" column="name"/>
+            <result property="price" column="price"/>
+        </association>
+    </resultMap>
+
+    <select id="getInnerJoinOrders" resultMap="detailedOrderResultMap">
+        select o.id,
+               o.user_id,
+               o.goods_id,
+               o.goods_num,
+               o.created_at,
+               o.updated_at,
+               u.id as user.id,
+               u.name as user.name,
+               u.tel as user.tel,
+               u.address as user.address,
+               g.id as goods.id,
+               g.name as goods.name,
+               g.price as goods.price,
+               sum(g.price * o.goods_num) as totalPrice
+
+        from "ORDER" o
+                 inner join user u on u.id = o.user_id
+                 inner join goods g on g.id = o.goods_id
+        where u.name is not null
+          and g.name is not null
+    </select>
+</mapper>
