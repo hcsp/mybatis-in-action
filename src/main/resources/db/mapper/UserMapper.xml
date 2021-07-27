@@ -9,19 +9,20 @@
         where id = #{id}
     </select>
 
-    <select id="getUserByPage" resultType="Map">
+    <select id="getUserByPage" resultType="User">
         select id, name, tel, address
         from USER
         <if test="username != null">
-            limit #{offset},#{limit}
+            where name = #{username}
         </if>
+        limit #{offset},#{limit}
     </select>
 
     <select id="countUser" resultType="int">
         select count(*)
         from USER
         <if test="username != null">
-            limit #{offset},#{limit}
+            where name = #{username}
         </if>
 
     </select>

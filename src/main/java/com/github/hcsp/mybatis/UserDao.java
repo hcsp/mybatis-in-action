@@ -33,12 +33,11 @@ public class UserDao {
             Map<String, Object> param = new HashMap(3);
             param.put("username", username);
             param.put("limit", pageSize);
-            param.put("offset", pageNum);
+            param.put("offset", (pageNum - 1) * pageSize);
             List<User> users = session.selectList("db.mapper.UserMapper.getUserByPage", param);
 
-            int count = session.selectOne("db.mapper.UserMapper.countUser", param);
-            int totalPage = (count + pageSize - 1) / pageSize;
-            // int totalPage = count / pageSize == 0 ? count % pageSize : (count % pageSize) + 1;
+            int count = session.selectOne("db.mapper.UserMapper.countUser", username);
+            int totalPage = count % pageSize == 0 ? count / pageSize : (count / pageSize) + 1;
             page = Pagination.pageOf(users, pageSize, pageNum, totalPage);
         }
         return page;
