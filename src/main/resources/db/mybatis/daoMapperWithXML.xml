@@ -3,6 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="db.mybatis.daoMapperWithXML">
+    <select id="getTotalOfUser" resultType="int">
+        select count(*) from USER
+        <if test="name != null">
+            where name=#{name}
+        </if>
+    </select>
     <update id="updateUser">
         update USER
         <set>

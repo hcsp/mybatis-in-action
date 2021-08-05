@@ -30,8 +30,9 @@ public class UserDao {
      */
     public Pagination<User> getUserByPage(@Param("name") String username, int pageSize, int pageNum) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            int totalUser = sqlSession.selectOne("db.mybatis.daoMapperWithXML.getTotalOfUser", username);
             List<User> userList = sqlSession.selectList("db.mybatis.daoMapperWithXML.getUserByPages", username, new RowBounds((pageNum - 1) * pageSize, pageSize));
-            return Pagination.pageOf(userList, pageSize, pageNum, (int) Math.ceil((double) userList.size() / pageSize));
+            return Pagination.pageOf(userList, pageSize, pageNum, (int) Math.ceil((double) totalUser / pageSize));
         }
     }
 
