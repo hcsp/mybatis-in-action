@@ -33,11 +33,11 @@ public class UserDao {
         map.put("limit", pageSize);
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            List<User> Users = session.selectList(
+            List<User> users = session.selectList(
                     "UserDao.Mapper.getUserByPage", map);
             Integer totalNum = session.selectOne("UserDao.Mapper.getTotalUserNum", username);
-            int totalPage = totalNum%pageSize == 0 ? totalNum/pageSize : totalNum/pageSize + 1;
-            return Pagination.pageOf(Users, pageSize, pageNum, totalPage);
+            int totalPage = totalNum % pageSize == 0 ? totalNum / pageSize : totalNum / pageSize + 1;
+            return Pagination.pageOf(users, pageSize, pageNum, totalPage);
         }
     }
 

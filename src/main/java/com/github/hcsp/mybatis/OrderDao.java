@@ -21,7 +21,7 @@ public class OrderDao {
      */
     public List<Order> getInnerJoinOrders() {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            return  session.selectList("UserDao.Mapper.getInnerJoinOrders");
+            return session.selectList("UserDao.Mapper.getInnerJoinOrders");
         }
     }
 }
