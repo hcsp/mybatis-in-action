@@ -57,7 +57,7 @@
                u.name                        as user_name,
                g.name                        as goods_name,
                (o.goods_num * o.goods_price) as total_Price
-        from "ORDER" o
+        from `ORDER` o
                  inner join goods g on o.goods_id = g.id
                  inner join user u on o.user_id = u.id
         where g.name is not null
