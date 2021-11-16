@@ -17,4 +17,7 @@
         </dataSource>
       </environment>
     </environments>
+    <mappers>
+        <mapper resource="db/mapper/UserMapper.xml"/>
+    </mappers>
 </configuration>
