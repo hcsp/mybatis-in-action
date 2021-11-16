@@ -23,12 +23,11 @@ public class UserDao {
     public Pagination<User> getUserByPage(String username, int pageSize, int pageNum) {
         SqlSession sqlSession = sqlSessionFactory.openSession(true);
         HashMap<String, Object> params = new HashMap<>();
-        params.put("username", username);
+        params.put("name", username);
         params.put("limit", pageSize);
         params.put("offset", (pageNum - 1) * pageSize);
         List<User> users = sqlSession.selectList("db.mapper.UserMapper.getUserByPage", params);
         Integer totalItems = sqlSession.selectOne("db.mapper.UserMapper.countPage", username);
-        System.out.println(totalItems);
         int totalPage = (totalItems % pageSize == 0) ? totalItems / pageSize : totalItems / pageSize + 1;
         return Pagination.pageOf(users, pageSize, pageNum, totalPage);
     }
