@@ -37,5 +37,61 @@
         </set>
         where id=#{id}
     </update>
+
+
+<!--    select o.ID as order_id, u.id as user_id, u.name as user_name,-->
+<!--    u.tel as tel, u.address as address, g.id as goods_id,-->
+<!--    g.name as goods_name, g.price as goods_price,-->
+<!--    (o.goods_price * o.goods_num) as total_price-->
+<!--    from "ORDER" o-->
+<!--    inner join GOODS g on o.GOODS_ID = g.ID-->
+<!--    inner join USER u on o.USER_ID = u.ID-->
+<!--    where g.NAME is not null and u.NAME is not null-->
+
+    <select id="getInnerJoinOrders" resultMap="Order">
+        select o.ID as order_id,u.id as user_id,u.NAME as user_name,
+               g.NAME as goods_name,g.price as goods_price,o.GOODS_NUM as goods_mum,
+               (o.goods_price * o.GOODS_NUM) as total_price
+        from "ORDER" o
+                 inner join GOODS g on o.GOODS_ID = g.ID
+                 inner join USER u on o.USER_ID = u.ID
+        where g.NAME is not null and u.NAME is not null
+
+    </select>
+
+
+
+
+
+<!--    <resultMap id="Order" type="com.github.hcsp.mybatis.entity.Order">-->
+<!--        <result property="id" column="order_id"/>-->
+<!--        <result property="totalPrice" column="total_price"/>-->
+<!--        <association property="user" javaType="User">-->
+<!--            <result property="id" column="user_id"/>-->
+<!--            <result property="name" column="user_name"/>-->
+<!--            <result property="tel" column="tel"/>-->
+<!--            <result property="address" column="address"/>-->
+<!--        </association>-->
+<!--        <association property="goods" javaType="Goods">-->
+<!--            <result property="id" column="goods_id"/>-->
+<!--            <result property="name" column="goods_name"/>-->
+<!--            <result property="price" column="goods_price"/>-->
+<!--        </association>-->
+<!--    </resultMap>-->
+    <resultMap id="Order" type="com.github.hcsp.mybatis.entity.Order">
+        <result property="id" column="order_id"/>
+        <result property="totalPrice" column="total_price"/>
+        <association property="user" javaType="User">
+            <result property="id" column="user_id"/>
+            <result property="name" column="user_name"/>
+        </association>
+        <collection property="goods" javaType="Goods">
+            <result property="name" column="goods_name"/>
+            <result property="price" column="goods_price"/>
+        </collection>
+    </resultMap>
+
+
+
 </mapper>
 
