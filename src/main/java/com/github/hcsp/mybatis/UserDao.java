@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
@@ -36,7 +38,7 @@ public class UserDao {
             map.put("limit", pageSize);
             List<User> users = session.selectList("MyMapper.getUserByPage", map);
             int count = session.selectOne("MyMapper.countUser", username);
-            int totalPage = (count%pageSize==0)?count/pageSize:count/pageSize + 1;
+            int totalPage = (count % pageSize == 0) ? count / pageSize : count / pageSize + 1;
             return Pagination.pageOf(users, pageSize, pageNum, totalPage);
 
         }
@@ -51,7 +53,7 @@ public class UserDao {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
             Map<String, Object> param = new HashMap<>();
             param.put("users", users);
-            session.insert("MyMapper.batchInsertUsers",param);
+            session.insert("MyMapper.batchInsertUsers", param);
         }
     }
 
@@ -72,6 +74,15 @@ public class UserDao {
      * @param id 待删除的用户ID
      */
     public void deleteUserById(Integer id) {
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
+            UserMapper userMapper = session.getMapper(UserMapper.class);
+            userMapper.deleteUserById(1);
+        }
+    }
+
+    interface UserMapper {
+        @Delete("delete from user where id = #{id}")
+        void deleteUserById(@Param("id") Integer id);
     }
 
     /**
@@ -81,6 +92,16 @@ public class UserDao {
      * @return 对应的用户
      */
     public User selectUserById(Integer id) {
-        return null;
+        List<User> users;
+        try (SqlSession session = sqlSessionFactory.openSession(true)) {
+            users = session.selectList("MyMapper.selectUserById", id);
+            System.out.println(users);
+            if (users.size() == 1) {
+                return users.get(0);
+            } else {
+                return null;
+            }
+        }
     }
+
 }

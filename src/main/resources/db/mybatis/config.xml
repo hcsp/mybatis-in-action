@@ -9,7 +9,6 @@
     <typeAliases>
         <typeAlias alias="User" type="com.github.hcsp.mybatis.entity.User" />
         <typeAlias alias="Order" type="com.github.hcsp.mybatis.entity.Order" />
-<!--        <typeAlias alias="User" type="com.github.hcsp.mybatis.entity.User"/>-->
         <typeAlias alias="Goods" type="com.github.hcsp.mybatis.entity.Goods"/>
     </typeAliases>
     <environments default="development">
@@ -25,5 +24,7 @@
     </environments>
     <mappers>
         <mapper resource="db/mybatis/MyMapper.xml"></mapper>
+        <mapper class="com.github.hcsp.mybatis.UserDao$UserMapper"/>
+
     </mappers>
 </configuration>
