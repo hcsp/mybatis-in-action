@@ -16,7 +16,7 @@
         <transactionManager type="JDBC"/>
         <dataSource type="POOLED">
             <property name="driver" value="org.h2.Driver"/>
-            <property name="url" value="jdbc:h2:file:/Users/ories/Downloads/java-zhangbo-project/38/01-mybatis-in-action/target/test"/>
+            <property name="url" value="jdbc:h2:file:./target/test"/>
             <property name="username" value="root"/>
             <property name="password" value="Jxi1Oxc92qSj"/>
         </dataSource>
