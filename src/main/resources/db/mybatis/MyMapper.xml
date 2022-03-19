@@ -53,14 +53,14 @@
                g.id as goods_id,
                g.name as goods_name,
                g.PRICE as goods_price,
-               (o.GOODS_NUM * o.GOODS_PRICE) as totalPrice
+               (o.GOODS_NUM * o.GOODS_PRICE) as total_price
         from "ORDER" as o
                   join USER as u ON o.USER_ID = u.ID
                   join GOODS as g on o.GOODS_ID = g.ID
     </select>
     <resultMap type="com.github.hcsp.mybatis.entity.Order" id="Order">
         <result property="id" column="order_id"/>
-        <result property="totalPrice" column="totalPrice"/>
+        <result property="totalPrice" column="total_price"/>
         <association property="user" javaType="User">
             <result property="id" column="user_id"/>
             <result property="name" column="user_name"/>
