@@ -1,6 +1,7 @@
 package com.github.hcsp.mybatis;
 
 import com.github.hcsp.mybatis.entity.Order;
+
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -22,7 +23,7 @@ public class OrderDao {
     public List<Order> getInnerJoinOrders() {
 
         try (SqlSession session = sqlSessionFactory.openSession()) {
-          return session.selectList("MyMapper.getInnerJoinOrders");
+            return session.selectList("MyMapper.getInnerJoinOrders");
         }
 
     }

@@ -49,9 +49,9 @@ public class UserDao {
     public void batchInsertUsers(List<User> users) {
         //设置了true可以自动提交
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-           Map<String,Object> param = new HashMap<>();
-           param.put("users",users);
-           session.insert("MyMapper.batchInsertUsers",param);
+            Map<String, Object> param = new HashMap<>();
+            param.put("users", users);
+            session.insert("MyMapper.batchInsertUsers", param);
         }
     }
 
@@ -62,7 +62,7 @@ public class UserDao {
      */
     public void updateUser(User user) {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            session.insert("MyMapper.updateUser",user);
+            session.insert("MyMapper.updateUser", user);
         }
     }
 
@@ -73,7 +73,7 @@ public class UserDao {
      */
     public void deleteUserById(Integer id) {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            session.delete("MyMapper.deleteUserById",id);
+            session.delete("MyMapper.deleteUserById", id);
         }
     }
 
@@ -85,7 +85,7 @@ public class UserDao {
      */
     public User selectUserById(Integer id) {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-           return session.selectOne("MyMapper.selectUserById",id);
+            return session.selectOne("MyMapper.selectUserById", id);
         }
     }
 }
