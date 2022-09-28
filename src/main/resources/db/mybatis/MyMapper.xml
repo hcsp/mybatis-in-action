@@ -4,10 +4,10 @@
 
 <mapper namespace="MyMapper">
     <select id="getUserByPage" parameterType="map" resultType="User">
-        select id,name,tel address
+        select id,name,tel,address
         from user
         <if test="username != null">
-            where name = #{name}
+            where name = #{username}
         </if>
         limit #{offset},#{limit}
     </select>
@@ -16,7 +16,7 @@
         select count(*)
         from user
         <if test="username != null">
-            where name = #{name}
+            where name = #{username}
         </if>
     </select>
     <insert id="batchInsertUsers" parameterType="map">
@@ -46,6 +46,16 @@
         inner join USER on USER.ID = `ORDER`.USER_ID
         where USER.name is not null and GOODS.name is not null
     </select>
+
+    <delete id="deleteUserById" parameterType="Integer">
+        delete from user
+        where id = #{id}
+    </delete>
+    <select id="selectUserById" parameterType="Integer" resultType="User">
+        select *
+        from user
+        where id = #{id}
+    </select>
     <resultMap id="Order" type="com.github.hcsp.mybatis.entity.Order">
         <result property="id" column="order_id"/>
         <result property="totalPrice" column="total_price"/>
@@ -58,13 +68,4 @@
             <result property="price" column="goods_price"/>
         </association>
     </resultMap>
-    <delete id="deleteUserById" parameterType="Integer">
-        delete from user
-        where id = #{id}
-    </delete>
-    <select id="selectUserById" parameterType="Integer" resultType="User">
-        select *
-        from user
-        where id = #{id}
-    </select>
 </mapper>
