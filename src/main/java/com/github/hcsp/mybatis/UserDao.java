@@ -62,8 +62,7 @@ public class UserDao {
      */
     public void updateUser(User user) {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            session.update("MyMapper.updateUser ", user);
-
+            session.update("MyMapper.updateUser", user);
         }
     }
 
@@ -74,7 +73,7 @@ public class UserDao {
      */
     public void deleteUserById(Integer id) {
         try (SqlSession session = sqlSessionFactory.openSession(true)) {
-            session.delete("MaMapper.deleteUserById", id);
+            session.delete("MyMapper.deleteUserById", id);
         }
     }
 
@@ -86,7 +85,7 @@ public class UserDao {
      */
     public User selectUserById(Integer id) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
-            return session.selectOne("MaMapper.selectUserById", id);
+            return session.selectOne("MyMapper.selectUserById", id);
         }
     }
 }

@@ -26,15 +26,17 @@
             (#{user.name},#{user.tel},#{user.address})
         </foreach>
     </insert>
+
     <update id="updateUser" parameterType="User">
         update user
         <set>
-            <if test="name != null">name=#{name},</if>
-            <if test="tel != null">tel=#{tel},</if>
-            <if test="address != null">address=#{address},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="tel != null">tel = #{tel},</if>
+            <if test="address != null">address = #{address},</if>
         </set>
-        where id=#{id}
+        where id = #{id}
     </update>
+
     <select id="getInnerJoinOrders" resultMap="Order">
         select `ORDER`.id as order_id,
         USER.id as user_id,
@@ -52,8 +54,7 @@
         where id = #{id}
     </delete>
     <select id="selectUserById" parameterType="Integer" resultType="User">
-        select *
-        from user
+        select * from user
         where id = #{id}
     </select>
     <resultMap id="Order" type="com.github.hcsp.mybatis.entity.Order">
