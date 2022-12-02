@@ -52,10 +52,10 @@
             <result property="price" column="goods_price"/>
         </association>
     </resultMap>
-    <delete id="deleteUserById" parameterType="int">
+    <delete id="deleteUserById" parameterType="Integer">
         delete user where id = #{id}
     </delete>
-    <select id="selectUserById" parameterType="int" resultType="User">
+    <select id="selectUserById" parameterType="Integer" resultType="User">
         select id, name, tel, address from user where id = #{id}
     </select>
 </mapper>

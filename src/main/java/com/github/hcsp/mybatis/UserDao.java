@@ -47,7 +47,7 @@ public class UserDao {
      * @param users 待插入的用户列表
      */
     public void batchInsertUsers(List<User> users) {
-        try(SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             Map<String, Object> map = new HashMap<>();
             map.put("users", users);
             sqlSession.insert("MyMapper.batchInsertUser", map);
@@ -60,7 +60,7 @@ public class UserDao {
      * @param user 要修改的用户信息，其id必须不为null
      */
     public void updateUser(User user) {
-        try(SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             sqlSession.update("MyMapper.updateUser", user);
         }
     }
@@ -71,7 +71,7 @@ public class UserDao {
      * @param id 待删除的用户ID
      */
     public void deleteUserById(Integer id) {
-        try(SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(true)) {
             sqlSession.delete("MyMapper.deleteUserById", id);
         }
     }
@@ -83,7 +83,7 @@ public class UserDao {
      * @return 对应的用户
      */
     public User selectUserById(Integer id) {
-        try(SqlSession sqlSession = sqlSessionFactory.openSession()) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             return sqlSession.selectOne("MyMapper.selectUserById", id);
         }
     }
