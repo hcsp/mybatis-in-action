@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.github.hcsp">
+    <select id="selectUsers" parameterType="map" resultType="User">
+        select * from USER
+        <where>
+            <if test="name != null">
+                name = #{name}
+            </if>
+        </where>
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+    <select id="selectUserById" parameterType="int" resultType="User">
+        select * from USER where id=#{id}
+    </select>
+    <select id="countUsers" resultType="int" parameterType="map">
+        select CEILING(COUNT(*) / CAST(#{pageSize} AS float)) from USER
+        <where>
+            <if test="name != null">
+                name = #{name}
+            </if>
+        </where>
+    </select>
+    <insert id="insertUsers" parameterType="map" useGeneratedKeys="true">
+        insert into user (name, tel, address)
+        values
+        <foreach collection="users" item="user" separator=",">
+            (#{user.name}, #{user.tel}, #{user.address})
+        </foreach>
+    </insert>
+    <update id="updateUserIfNecessary">
+        update USER
+        <set>
+            <if test="name != null">name=#{name},</if>
+            <if test="tel != null">tel=#{tel},</if>
+            <if test="address != null">address=#{address},</if>
+        </set>
+        where id=#{id}
+    </update>
+    <delete id="deleteUser" parameterType="int">
+        delete from USER where id = #{id}
+    </delete>
+</mapper>
